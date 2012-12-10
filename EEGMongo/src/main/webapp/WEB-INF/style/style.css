@@ -1,0 +1,41 @@
+/*
+    Document   : style.css
+
+    Author     : Jan Koren
+  */
+
+/* na zacatku resetovani vsemoznych vlastnosti */
+ul, li, div,form, input {
+    border-width: 0px;
+    border-style: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+html, body, #container {
+    height: 100%;
+    font-family: Arial,Helvetica,sans-serif;
+    text-align: justify;
+    font-size: 10pt;
+    min-width: 550px; /* aby nedošlo k zalomení sloupců při zúžení okna prohlížeče */
+}
+
+body {
+    margin: 0px;
+    background-image: url('../images/back_cloud.png');
+    background-repeat: repeat-x;
+    background-color: #e5b595;
+    background-position: 100% 65%
+}
+
+a {
+    color: #000;
+    text-decoration: none;
+}
+a:hover {
+    color: #000;
+    text-decoration: underline;
+}
+a:visited {
+    color: #000;
+}

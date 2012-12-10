@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="windows-1250"
+standalone="yes"?>
+
+<imagelist count="250" random="yes" txt="output.txt" delay="700" report="single" pause="300">
+        
+	
+	<img src="p300_img\1a.jpg" count="50" mark="one"/>
+	<img src="p300_img\1b.jpg" count="50" mark="one"/>
+
+	<img src="p300_img\8.jpg" count="50" mark="eight"/>
+	<img src="p300_img\1c.jpg" count="50" mark="one"/>
+	<img src="p300_img\1.jpg" count="50" mark="one"/>
+
+
+</imagelist>

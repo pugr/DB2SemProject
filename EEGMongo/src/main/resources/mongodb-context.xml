@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/data/mongo
+       http://www.springframework.org/schema/data/mongo/spring-mongo.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.1.xsd
+       http://www.springframework.org/schema/data/jpa
+       http://www.springframework.org/schema/data/jpa/spring-jpa-1.0.xsd">
+
+    <context:property-placeholder location="classpath:database.properties"/>
+
+    <!-- Default bean name is 'mongo' -->
+    <mongo:mongo id="mongo"
+                 host="${db.mongo_host}"
+                 port="${db.mongo_port}"/>
+
+    <!-- Location of Spring Data repositories -->
+    <mongo:repositories base-package="cz.zcu.kiv.eegmongo.repository"/>
+
+    <!-- Factory bean that creates the Mongo instance -->
+    <mongo:db-factory id="mongoDbFactory"
+                      dbname="${db.mongo_dbname}"
+                      username="${db.mongo_username}"
+                      password="${db.mongo_password}"
+                      mongo-ref="mongo"/>
+
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
+        <property name="writeResultChecking" value="LOG"/>
+    </bean>
+
+    <bean class="org.springframework.data.mongodb.core.mapping.event.LoggingEventListener"/>
+
+    <bean class="org.springframework.data.mongodb.core.MongoExceptionTranslator"/>
+
+    <!-- Mongo cross-store aspect config -->
+    <bean class="org.springframework.data.mongodb.crossstore.MongoDocumentBacking"
+          factory-method="aspectOf">
+        <property name="changeSetPersister" ref="mongoChangeSetPersister"/>
+    </bean>
+
+    <bean id="mongoChangeSetPersister"
+          class="org.springframework.data.mongodb.crossstore.MongoChangeSetPersister">
+        <property name="mongoTemplate" ref="mongoTemplate"/>
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <!-- Use this post processor to translate any MongoExceptions thrown in @Repository annotated classes -->
+    <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+
+</beans>
